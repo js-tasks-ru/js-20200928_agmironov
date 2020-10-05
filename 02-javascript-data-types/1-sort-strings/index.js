@@ -17,7 +17,7 @@ export function sortStrings(arr, param = 'asc') {
 
   function compareStrings(str1, str2) {
     // Потому что производительность - не главное)
-    return inverseCase(str1).localeCompare(inverseCase(str2));
+    return inverseCase(str1).localeCompare(inverseCase(str2), "ru");
   }
 
   return [...arr].sort((a, b) => param === "asc" ? compareStrings(a, b) : compareStrings(b, a));
