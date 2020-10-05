@@ -5,7 +5,7 @@
  * @returns {string[]}
  */
 export function sortStrings(arr, param = 'asc') {
-  if (!~['asc', 'desc'].indexOf(param)) {
+  if (!['asc', 'desc'].includes(param)) {
     return arr;
   }
   function compareStrings(str1, str2) {
