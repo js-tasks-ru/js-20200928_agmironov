@@ -6,4 +6,19 @@
  */
 export function sortStrings(arr, param = 'asc') {
 
+  function inverseCase(str) {
+    let result = "";
+    for (let char of str) {
+      const isUpper = char.toUpperCase() === char;
+      result += isUpper ? char.toLowerCase() : char.toUpperCase();
+    }
+    return result;
+  }
+
+  function compareStrings(str1, str2) {
+    // Потому что производительность - не главное)
+    return inverseCase(str1).localeCompare(inverseCase(str2));
+  }
+
+  return [...arr].sort((a, b) => param === "asc" ? compareStrings(a, b) : compareStrings(b, a));
 }
