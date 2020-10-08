@@ -29,4 +29,4 @@ export function trimSymbols(string, size) {
   );
 
   return result.join("");
-
+}
