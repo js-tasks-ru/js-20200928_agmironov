@@ -4,11 +4,11 @@
  * @returns {function} - function-getter which allow get value from object by set path
  */
 export function createGetter(path) {
+  const fields = path.split('.');
   return function (obj) {
-    return path.split('.')
-      .reduce(
+    return fields.reduce(
         (object, field) => object !== undefined ? object[field] : object,
         obj
-      )
-  }
+      );
+  };
 }
