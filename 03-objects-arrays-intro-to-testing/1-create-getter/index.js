@@ -7,8 +7,8 @@ export function createGetter(path) {
   const fields = path.split('.');
   return function (obj) {
     return fields.reduce(
-        (object, field) => object !== undefined ? object[field] : object,
-        obj
-      );
+      (object, field) => object !== undefined ? object[field] : object,
+      obj
+    );
   };
 }
