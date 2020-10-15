@@ -46,7 +46,6 @@ export default class SortableTable {
           .localeCompare(item2[this._fieldValue], ['ru', 'en'], {caseFirst: "upper"});
       case "number": return (item1, item2) => direction * (parseInt(item1[this._fieldValue]) - parseInt(item2[this._fieldValue]));
       }
-
     }
     return () => 0;
   }
@@ -63,23 +62,19 @@ export default class SortableTable {
 
   _generateHtml() {
     return `
-<div data-element="productsContainer" class="products-list__container">
-  <div class="sortable-table">
-
-    <div data-element="header" class="sortable-table__header sortable-table__row">
-      ${this._generateHeader(this._fieldValue, this._orderValue)}
-    </div>
-
-    <div data-element="body" class="sortable-table__body">
-      ${this._generateDataHtml()}
-    </div>
-  </div>
-</div>`;
+      <div data-element="productsContainer" class="products-list__container">
+        <div class="sortable-table">
+            ${this._generateHeader(this._fieldValue, this._orderValue)}
+            ${this._generateDataHtml()}
+        </div>
+      </div>`;
   }
 
   _generateHeader() {
     const result = [];
+    result.push(`<div data-element="header" class="sortable-table__header sortable-table__row">`);
     this._header.forEach(info => result.push(this._generateOneHeaderCell(info)));
+    result.push(`</div>`);
     return result.join("");
   }
 
@@ -101,10 +96,11 @@ export default class SortableTable {
   }
 
   _generateDataHtml() {
-    return this._customData.reduce((dataHtml, dataItem) => {
-      dataHtml.push(this._generateDataRow(dataItem));
-      return dataHtml;
-    }, []).join("\n");
+    const result = [];
+    result.push(`<div data-element="body" class="sortable-table__body">`);
+    this._customData.forEach(dataItem => result.push(this._generateDataRow(dataItem)));
+    result.push("</div>");
+    return result.join("\n");
   }
 
   _generateDataRow(dataItem) {
