@@ -1,6 +1,5 @@
-let curNotification;
-
 export default class NotificationMessage {
+  static _activeNotification;
 
   constructor(message = "", {duration = 0, type = 'success'} = {}) {
     // инкапсуляцие))
@@ -30,7 +29,6 @@ export default class NotificationMessage {
   }
 
   remove() {
-    curNotification = null;
     this.element.remove();
   }
 
@@ -39,10 +37,10 @@ export default class NotificationMessage {
   }
 
   _replaceNotification() {
-    if (curNotification) {
-      curNotification.destroy();
+    if (NotificationMessage._activeNotification) {
+      NotificationMessage._activeNotification.remove();
     }
-    curNotification = this;
+    NotificationMessage._activeNotification = this;
   }
 
   _render() {
