@@ -14,15 +14,12 @@ export default class SortableTable {
     this._fieldValue = fieldValue;
     this._orderValue = orderValue;
     this._customData = this._sortData();
-    this.element.innerHTML = this._generateHtml();
+    this._subElements.header.innerHTML = this._generateHeaderHtml();
+    this._subElements.body.innerHTML = this._generateDataHtml();
   }
 
   get subElements() {
-    if (this.element) {
-      const prokatilo = {body : this.element.lastElementChild.lastElementChild.lastElementChild};
-      return prokatilo;
-    }
-    return null;
+    return this._subElements;
   }
 
   remove() {
@@ -52,6 +49,7 @@ export default class SortableTable {
 
   _render() {
     this.element = this._generateElement();
+    this._subElements = this._getSubElements(this.element);
   }
 
   _generateElement() {
@@ -64,18 +62,21 @@ export default class SortableTable {
     return `
       <div data-element="productsContainer" class="products-list__container">
         <div class="sortable-table">
-            ${this._generateHeader(this._fieldValue, this._orderValue)}
+          <div data-element="header" class="sortable-table__header sortable-table__row">
+            ${this._generateHeaderHtml()}
+          </div>
+          <div data-element="body" class="sortable-table__body">
             ${this._generateDataHtml()}
+          </div>
         </div>
       </div>`;
   }
 
-  _generateHeader() {
-    const result = [];
-    result.push(`<div data-element="header" class="sortable-table__header sortable-table__row">`);
-    this._header.forEach(info => result.push(this._generateOneHeaderCell(info)));
-    result.push(`</div>`);
-    return result.join("");
+  _generateHeaderHtml() {
+    return this._header.reduce((result, info) => {
+      result.push(this._generateOneHeaderCell(info));
+      return result;
+    }, []).join("");
   }
 
   _generateOneHeaderCell(info) {
@@ -96,11 +97,10 @@ export default class SortableTable {
   }
 
   _generateDataHtml() {
-    const result = [];
-    result.push(`<div data-element="body" class="sortable-table__body">`);
-    this._customData.forEach(dataItem => result.push(this._generateDataRow(dataItem)));
-    result.push("</div>");
-    return result.join("\n");
+    return this._customData.reduce((result, dataItem) => {
+      result.push(this._generateDataRow(dataItem));
+      return result;
+    }, []).join("\n");
   }
 
   _generateDataRow(dataItem) {
@@ -113,6 +113,15 @@ export default class SortableTable {
     ));
     result.push("</a>");
     return result.join("\n");
+  }
+
+  _getSubElements(element) {
+    const elements = element.querySelectorAll('[data-element]');
+
+    return [...elements].reduce((acc, item) => {
+      acc[item.dataset.element] = item;
+      return acc;
+    }, {});
   }
 
 }
