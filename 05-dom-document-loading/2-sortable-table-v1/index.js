@@ -108,7 +108,7 @@ export default class SortableTable {
     result.push(`<a href="/products/${dataItem.id}" class="sortable-table__row">`);
     this._header.forEach(info => result.push(
       info.template
-        ? info.template(dataItem.images)
+        ? info.template(dataItem[info.id])
         : `<div class="sortable-table__cell">${dataItem[info.id]}</div>`
     ));
     result.push("</a>");
