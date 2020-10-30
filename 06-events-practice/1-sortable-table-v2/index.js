@@ -76,7 +76,7 @@ export default class SortableTable {
     };
 
     if (column) {
-      const { id, order = "asc" } = column.dataset;
+      const { id, order } = column.dataset;
       const sortedData = this._sortData(id, toggleOrder(order));
       const arrow = column.querySelector('.sortable-table__sort-arrow');
 
@@ -113,7 +113,7 @@ export default class SortableTable {
 
   _generateOneHeaderCell(info) {
     return `
-      <div class="sortable-table__cell" data-id="${info.id}" data-sortable="${info.sortable}">
+      <div class="sortable-table__cell" data-id="${info.id}" data-sortable="${info.sortable}" data-order="asc">
         <span>${info.title}</span>
         ${info.id === this._sorted.id ? this._getArrowHtml() : ""}
       </div>`;
